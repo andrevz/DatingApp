@@ -1,0 +1,25 @@
+import { HttpClient } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent implements OnInit {
+  title = 'Dating App';
+  users: any;
+
+  private readonly http = inject(HttpClient);
+
+  ngOnInit(): void {
+    this.http.get('https://localhost:7001/api/users').subscribe({
+      next: (response) => this.users = response,
+      error: (error) => console.error(error),
+      complete: () => console.log('request has completed')
+    });
+  }
+}
